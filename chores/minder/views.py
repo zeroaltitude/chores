@@ -38,8 +38,9 @@ def handle_completed(completed, user):
     # completed_id|note,completed_id|note...
     completes = completed.split(',')
     for complete in completes:
-         id_, value = complete.split('|')
-         complete_chore(user, id_, value)
+         if len(complete) > 3:
+             id_, value = complete.split('|')
+             complete_chore(user, id_, value)
 
 
 def complete_chore(user, id_, value):
