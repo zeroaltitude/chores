@@ -44,7 +44,7 @@ def handle_completed(completed, user):
 
 def complete_chore(user, id_, value):
     chore = Chore.objects.get(pk=id_)
-    completed_chore = ChoreCompleted(chore=chore, user=user, note=value)
+    completed_chore = ChoreCompleted(chore=chore, notes=value)
     completed_chore.save()
 
 

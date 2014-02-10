@@ -35,7 +35,7 @@
                 </p>
             </p>
             <form method="POST" id="secretform">
-               <input type="hidden" name="completed" id="completed" value="" />
+               <input type="hidden" name="completed" id="completed" value="" />{% csrf_token %}
             </form>
         </div>
     </body>
