@@ -23,7 +23,11 @@ admin.site.register(Chore, ChoreAdmin)
 
 class ChoreOwnerAdmin(admin.ModelAdmin):
     form = ChoreOwnerForm
-    list_display = ('chore', 'owner',)
+    def chore_name(obj):
+        return obj.chore.chore_name
+    def owner_name(obj):
+        return obj.owner.username
+    list_display = (owner_name, chore_name, 'owner',)
 admin.site.register(ChoreOwner, ChoreOwnerAdmin)
 
 
