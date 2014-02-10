@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Chore minder</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <script>
+
+        </script>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <div class="main_body">
+            <p>
+		Your chores:
+            </p>
+            <p>
+                {% for chore in chores %}
+                    <span>{%= chore.chore_name %}: done? <input type="checkbox" value="{%= chore.id %}" name="chore_id" /> -- notes: <input type="text" size="100" name="chorenote_{%= chore.id %}" />
+                {% endfor %}
+                <p>
+                    <a href="javascript:void(0);" onclick="submitCompletions();">Update chores</a>
+                </p>
+            </p>
+        </div>
+    </body>
+</html>
