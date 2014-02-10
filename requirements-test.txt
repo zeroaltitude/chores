@@ -1,0 +1,6 @@
+django_nose
+nose
+coverage
+pep8
+pyflakes
+pylint
