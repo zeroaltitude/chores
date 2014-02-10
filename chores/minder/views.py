@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
+from django.contrib.auth import authenticate, login
 
 from minder.models import Chore, ChoreCompleted
 
@@ -11,12 +12,13 @@ def home(request):
     if request.user.is_authenticated():
         logged_in = True
     else:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-             login(request, user)
-             logged_in = True
+        if request.POST.get('username', None) is not None:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                logged_in = True
     if logged_in:
         template = "minder/loggedin.html"
     else:
@@ -28,7 +30,7 @@ def home(request):
     context = RequestContext(request, {
         'chores': chores,
     })
-    return HttpResponse(template.render(template, {'chores': chores}))
+    return HttpResponse(template.render(context))
 
 
 def handle_completed(completed, user):
