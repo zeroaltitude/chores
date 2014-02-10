@@ -3,7 +3,19 @@
         <title>Chore minder</title>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
         <script>
-
+            function submitCompletions() {
+                // get ids
+                var checkboxes = $("input:checked");
+                var result = "";
+                for (var i = 0, j = checkboxes.length; i < j; i++) {
+		    var thisobj = $(checkboxes[i]);
+                    var thisid = thisobj.val();
+                    var note = $("#chorenote_" + thisid).val();
+                    result += thisid + "|" + note + ",";
+                }
+                $("#completed").val(result);
+                $("#secretform").submit();
+            }
         </script>
         <style>
 
@@ -16,12 +28,15 @@
             </p>
             <p>
                 {% for chore in chores %}
-                    <span>{{ chore.chore_name }}: done? <input type="checkbox" value="{{ chore.id }}" name="chore_id" /> -- notes: <input type="text" size="100" name="chorenote_{{ chore.id }}" />
+                    <span>{{ chore.chore_name }}: done? <input type="checkbox" value="{{ chore.id }}" name="chore_id" /> -- notes: <input type="text" size="100" id="chorenote_{{ chore.id }}" />
                 {% endfor %}
                 <p>
                     <a href="javascript:void(0);" onclick="submitCompletions();">Update chores</a>
                 </p>
             </p>
+            <form method="POST" id="secretform">
+               <input type="hidden" name="completed" id="completed" value="" />
+            </form>
         </div>
     </body>
 </html>

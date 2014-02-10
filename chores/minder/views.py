@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login
 
-from minder.models import Chore, ChoreCompleted
+from minder.models import Chore, ChoreCompleted, ChoreOwner
 
 # Create your views here.
 def home(request):
@@ -11,6 +11,7 @@ def home(request):
     chores = []
     if request.user.is_authenticated():
         logged_in = True
+        chores = [chore_owned.chore for chore_owned in ChoreOwner.objects.filter(owner=request.user)]
     else:
         if request.POST.get('username', None) is not None:
             username = request.POST['username']
