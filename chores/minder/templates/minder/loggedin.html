@@ -18,22 +18,49 @@
             }
         </script>
         <style>
-
+            .header {
+                text-align: right;
+                height: 20px;
+                background-color:#ccc;
+                width: 100%;
+                padding: 5px;
+            }
+            .completions {
+                display: inline-block;
+                background-color: #9f9;
+                padding: 2px;
+                font-size: 12px;
+            }
+            .dateblock {
+                display: inline-block;
+                background-color: #d88;
+                margin: 2px;
+                padding: 2px;
+                font-size: 12px;                
+            }
         </style>
     </head>
     <body>
+        <div class="header">
+            <span>
+                You are logged in as {{ username }} [<a href="/logout">logout</a>]
+            </span>
+        </div>
         <div class="main_body">
+            <h3>
+                Chore information for the week of {{ week }}
+            </h3>
             <p>
-		Your chores:
+        		Your chores:
             </p>
-            <p>
+            <div>
                 {% for chore in chores %}
-                    <span>{{ chore.chore_name }}: done? <input type="checkbox" value="{{ chore.id }}" name="chore_id" /> -- notes: <input type="text" size="100" id="chorenote_{{ chore.id }}" />
+                    <span>{{ chore.chore_name }}: done?</span> <input type="checkbox" value="{{ chore.id }}" name="chore_id" /> -- notes: <input type="text" size="100" id="chorenote_{{ chore.id }}" />&nbsp;<div class="completions">marked complete this week: {% for date in chore.week_completions %}<div class="dateblock">{{ date }}</div>{% endfor %}</div>
                 {% endfor %}
                 <p>
                     <a href="javascript:void(0);" onclick="submitCompletions();">Update chores</a>
                 </p>
-            </p>
+            </div>
             <form method="POST" id="secretform">
                <input type="hidden" name="completed" id="completed" value="" />{% csrf_token %}
             </form>

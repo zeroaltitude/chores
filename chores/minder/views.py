@@ -1,11 +1,28 @@
+from datetime import date, timedelta
+
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from minder.models import Chore, ChoreCompleted, ChoreOwner
 
-# Create your views here.
+
+def get_this_week():
+    """Sunday, January 14 - Saturday, January 20"""
+    today = date.today()
+    # normalize this to sunday = 0 from monday = 0
+    dateweekday = (today.weekday() + 1) % 7
+    sundaylast = today - timedelta(days=dateweekday)
+    saturdaynext = today + timedelta(days=(6 - dateweekday))
+    return "%s - %s" % (sundaylast.strftime("%A, %B %d, %Y"), saturdaynext.strftime("%A, %B %d, %Y"))
+
+
+def logmeout(request):
+    logout(request)
+    return HttpResponseRedirect("/")
+
+
 def home(request):
     logged_in = False
     chores = []
@@ -29,6 +46,8 @@ def home(request):
         handle_completed(request.POST['completed'], request.user)
     template = loader.get_template(template)
     context = RequestContext(request, {
+        'week': get_this_week(),
+        'username': request.user.username,
         'chores': chores,
     })
     return HttpResponse(template.render(context))
