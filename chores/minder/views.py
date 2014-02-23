@@ -43,7 +43,7 @@ def logmeout(request):
 
 
 def historical(request):
-    if request.user.username != 'admin':
+    if request.user.username not in ADMINS:
         return HttpResponseRedirect("/")
     weeks = []
     # create an iterator that returns week intervals from the earliest chore completion:
