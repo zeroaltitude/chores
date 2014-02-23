@@ -92,6 +92,9 @@
                 color: #5f5;
                 font-size: 18px;
             }
+            .infotable {
+                width: 100%;
+            }
         </style>
         <link href='http://fonts.googleapis.com/css?family=Poller+One|Amethysta' rel='stylesheet' type='text/css'>
     </head>
@@ -109,11 +112,10 @@
             <div>
                 {% for user in users %}
                     <h3>{{ user.username }}</h3>
-                    <table>
+                    <table class='infotable'>
                         <thead class="chorehead">
                             <tr>
                                 <th>Chore</th>
-                                <th></th>
                                 <th>Completed</th>
                         </thead>
                         <tbody class="choretable">
@@ -121,14 +123,6 @@
                             <tr>
                                 <td class="chore_description">
                                     <span>{{ chore.chore_name }}</span>
-                                </td>
-                                <td class="chore_entry">
-                                    <p>
-                                        <span>Done:</span> <input type="checkbox" value="{{ chore.id }}" name="chore_id" />
-                                    </p>
-                                    <p>
-                                        <span>Notes:</span> <input type="text" size="60" id="chorenote_{{ chore.id }}" />
-                                    </p>
                                 </td>
                                 <td class="chore_completions">
                                     <div class="completions">
@@ -138,21 +132,14 @@
                             </tr>
                             {% endfor %}
                             <tr>
-                                <td colspan="3" class="totalweek">Total earned this week: 
+                                <td colspan="2" class="totalweek">Total earned this week: 
                                     <span class="totalearned">{{ user.totalearned }}</span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <hr />
                 {% endfor %}
-                <p>
-                    <a href="javascript:void(0);" onclick="submitCompletions();">Update chores</a>
-                </p>
             </div>
-            <form method="POST" id="secretform">
-               <input type="hidden" name="completed" id="completed" value="" />{% csrf_token %}
-            </form>
         </div>
     </body>
 </html>
