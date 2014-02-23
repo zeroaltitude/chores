@@ -62,7 +62,7 @@
                 font-size: 12px;                
             }
             .chorehead {
-                font-size: 24px;
+                font-size: 14px;
                 color: #eee;
             }
             .choretable {
@@ -104,44 +104,52 @@
         </div>
         <div class="main_body_content">
             <h2>
-                Chore information for the week of {{ week }}
+                Chore information for the week of {{ week }} [<a href="/minder/historical">historical</a>]
             </h2>
             <div>
-                <table>
-                    <thead class="chorehead">
-                        <tr>
-                            <th>Chore</th>
-                            <th></th>
-                            <th>Completed</th>
-                    </thead>
-                    <tbody class="choretable">
-                        {% for chore in chores %}
-                        <tr>
-                            <td class="chore_description">
-                                <span>{{ chore.chore_name }}</span>
-                            </td>
-                            <td class="chore_entry">
-                                <p>
-                                    <span>Done:</span> <input type="checkbox" value="{{ chore.id }}" name="chore_id" />
-                                </p>
-                                <p>
-                                    <span>Notes:</span> <input type="text" size="60" id="chorenote_{{ chore.id }}" />
-                                </p>
-                            </td>
-                            <td class="chore_completions">
-                                <div class="completions">
-                                    {% for date in chore.week_completions %}<div class="dateblock">{{ date }}</div>{% endfor %}
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        <tr>
-                            <td colspan="3" class="totalweek">Total earned this week: 
-                                <span class="totalearned">{{ totalearned }}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                {% for week in weeks %}
+                    <h2>Week of {{ week.start_ui }} - {{ week.end_ui }}:</h2>
+                    {% for user in week.users %}
+                        <h3>{{ user.username }}</h3>
+                        <table>
+                            <thead class="chorehead">
+                                <tr>
+                                    <th>Chore</th>
+                                    <th></th>
+                                    <th>Completed</th>
+                            </thead>
+                            <tbody class="choretable">
+                                {% for chore in user.chores %}
+                                <tr>
+                                    <td class="chore_description">
+                                        <span>{{ chore.chore_name }}</span>
+                                    </td>
+                                    <td class="chore_entry">
+                                        <p>
+                                            <span>Done:</span> <input type="checkbox" value="{{ chore.id }}" name="chore_id" />
+                                        </p>
+                                        <p>
+                                            <span>Notes:</span> <input type="text" size="60" id="chorenote_{{ chore.id }}" />
+                                        </p>
+                                    </td>
+                                    <td class="chore_completions">
+                                        <div class="completions">
+                                            {% for date in chore.week_completions %}<div class="dateblock">{{ date }}</div>{% endfor %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="3" class="totalweek">Total earned this week: 
+                                        <span class="totalearned">{{ user.totalearned }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr />
+                    {% endfor %}
+                    <hr/><hr/>
+                {% endfor %}
                 <p>
                     <a href="javascript:void(0);" onclick="submitCompletions();">Update chores</a>
                 </p>

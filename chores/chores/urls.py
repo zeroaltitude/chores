@@ -6,6 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'minder.views.home', name='home'),
+    url(r'^minder/historical/?$', 'minder.views.historical', name='historical'),
     url(r'^logout/?$', 'minder.views.logmeout', name='logmeout'),
     # url(r'^blog/', include('blog.urls')),
 
