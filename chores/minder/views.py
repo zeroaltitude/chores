@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 
 from minder.models import Chore, ChoreCompleted, ChoreOwner
 
+ADMINS = ['admin', 'testadmin']
+
 
 def get_weeks_from_inception():
     """Weeks starting from the earliest chore completed."""
@@ -82,7 +84,7 @@ def home(request):
                 login(request, user)
                 logged_in = True
     if logged_in:
-        if request.user.username == 'admin':
+        if request.user.username in ADMINS:
             for user in User.objects.all():
                 chores = [chore_owned.chore for chore_owned in ChoreOwner.objects.filter(owner=user)]
                 totalearned = sum([(chore.chore_value * len(chore.week_completions())) for chore in chores])
