@@ -84,6 +84,9 @@ def home(request):
                 login(request, user)
                 logged_in = True
     if logged_in:
+        # if this is a post, someone added a completed chore
+        if request.POST.get('completed', None) is not None:
+            handle_completed(request.POST['completed'], request.user)
         if request.user.username in ADMINS:
             for user in User.objects.all():
                 chores = [chore_owned.chore for chore_owned in ChoreOwner.objects.filter(owner=user)]
@@ -96,9 +99,6 @@ def home(request):
             template = "minder/loggedin.html"
     else:
         template = "minder/login.html"
-    # if this is a post, someone added a completed chore
-    if request.POST.get('completed', None) is not None:
-        handle_completed(request.POST['completed'], request.user)
     template = loader.get_template(template)
     context = RequestContext(request, {
         'week': get_this_week(),
