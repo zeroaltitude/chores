@@ -28,7 +28,6 @@ def home(request):
     chores = []
     if request.user.is_authenticated():
         logged_in = True
-        chores = [chore_owned.chore for chore_owned in ChoreOwner.objects.filter(owner=request.user)]
     else:
         if request.POST.get('username', None) is not None:
             username = request.POST['username']
@@ -38,6 +37,7 @@ def home(request):
                 login(request, user)
                 logged_in = True
     if logged_in:
+        chores = [chore_owned.chore for chore_owned in ChoreOwner.objects.filter(owner=request.user)]
         template = "minder/loggedin.html"
     else:
         template = "minder/login.html"

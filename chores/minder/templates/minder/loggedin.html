@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <html>
     <head>
         <title>Chore minder</title>
@@ -8,7 +9,7 @@
                 var checkboxes = $("input:checked");
                 var result = "";
                 for (var i = 0, j = checkboxes.length; i < j; i++) {
-		    var thisobj = $(checkboxes[i]);
+                    var thisobj = $(checkboxes[i]);
                     var thisid = thisobj.val();
                     var note = $("#chorenote_" + thisid).val();
                     result += thisid + "|" + note + ",";
@@ -18,16 +19,38 @@
             }
         </script>
         <style>
+            body {
+                background-image: url('{% static 'images/chores.jpg' %}');
+                background-size:100% 100%;
+                background-repeat:no-repeat;
+                font-family: 'Amethysta';
+                margin: 0;
+            }
+            .main_body {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                background-color: #1B501B;
+                opacity: .6;
+            }
+            .main_body_content {
+                position: relative;
+                color: #cec;
+                margin: 8px;
+            }
             .header {
+                position: relative;
                 text-align: right;
                 height: 20px;
                 background-color:#ccc;
                 width: 100%;
-                padding: 5px;
+                padding: 5px 5px 5px 0;
             }
             .completions {
                 display: inline-block;
-                background-color: #9f9;
+                background-color: #111;
                 padding: 2px;
                 font-size: 12px;
             }
@@ -38,25 +61,75 @@
                 padding: 2px;
                 font-size: 12px;                
             }
+            .chorehead {
+                font-size: 24px;
+                color: #eee;
+            }
+            .choretable {
+                color: #cec;
+                background-color: #222;
+                opacity: .7;
+            }
+            .choretable td {
+                padding: 10px;
+            }
+            .chore_description {
+                width: 40%;
+            }
+            .chore_entry {
+                width: 20%;
+            }
+            .chore_completions {
+                width: 35%;
+            }
+            .main_body_content a {
+                color: white;
+            }
         </style>
+        <link href='http://fonts.googleapis.com/css?family=Poller+One|Amethysta' rel='stylesheet' type='text/css'>
     </head>
     <body>
+        <div class="main_body"></div>
         <div class="header">
             <span>
                 You are logged in as {{ username }} [<a href="/logout">logout</a>]
             </span>
         </div>
-        <div class="main_body">
+        <div class="main_body_content">
             <h3>
                 Chore information for the week of {{ week }}
             </h3>
-            <p>
-        		Your chores:
-            </p>
             <div>
-                {% for chore in chores %}
-                    <span>{{ chore.chore_name }}: done?</span> <input type="checkbox" value="{{ chore.id }}" name="chore_id" /> -- notes: <input type="text" size="100" id="chorenote_{{ chore.id }}" />&nbsp;<div class="completions">marked complete this week: {% for date in chore.week_completions %}<div class="dateblock">{{ date }}</div>{% endfor %}</div>
-                {% endfor %}
+                <table>
+                    <thead class="chorehead">
+                        <tr>
+                            <th>Chore</th>
+                            <th></th>
+                            <th>Completed</th>
+                    </thead>
+                    <tbody class="choretable">
+                        {% for chore in chores %}
+                        <tr>
+                            <td class="chore_description">
+                                <span>{{ chore.chore_name }}</span>
+                            </td>
+                            <td class="chore_entry">
+                                <p>
+                                    <span>Done:</span> <input type="checkbox" value="{{ chore.id }}" name="chore_id" />
+                                </p>
+                                <p>
+                                    <span>Notes:</span> <input type="text" size="60" id="chorenote_{{ chore.id }}" />
+                                </p>
+                            </td>
+                            <td class="chore_completions">
+                                <div class="completions">
+                                    {% for date in chore.week_completions %}<div class="dateblock">{{ date }}</div>{% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 <p>
                     <a href="javascript:void(0);" onclick="submitCompletions();">Update chores</a>
                 </p>
