@@ -21,11 +21,11 @@ class Chore(models.Model):
         date1, date2 = week_interval()
         print "looking for completions between %s, %s" % (date1, date2)
         completions = ChoreCompleted.objects.filter(chore=self).filter(complete_date__gte=date1).filter(complete_date__lte=date2)
-        return [completion.complete_date for completion in completions]
+        return [{'note': completion.notes, 'date': completion.complete_date} for completion in completions]
     def completions_in(self, date1, date2):
         print "looking for completions between %s, %s" % (date1, date2)
         completions = ChoreCompleted.objects.filter(chore=self).filter(complete_date__gte=date1).filter(complete_date__lte=date2)
-        return [completion.complete_date for completion in completions]
+        return [{'note': completion.notes, 'date': completion.complete_date} for completion in completions]
 
 
 class ChoreOwner(models.Model):
