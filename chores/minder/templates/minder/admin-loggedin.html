@@ -98,6 +98,16 @@
             .infotable {
                 width: 100%;
             }
+            .valuenum {
+                background-color: #060;
+                color: #fff;
+                padding: 4px;
+                position: relative;
+                display: inline-block;
+                float: right;
+                font-size: 14px;
+                border-radius: 10px;
+            }
         </style>
         <link href='http://fonts.googleapis.com/css?family=Poller+One|Amethysta' rel='stylesheet' type='text/css'>
     </head>
@@ -126,6 +136,7 @@
                             <tr>
                                 <td class="chore_description">
                                     <span>{{ chore.chore_name }}</span>
+                                    <div class="valuenum">{{ chore.chore_value }}</div>
                                 </td>
                                 <td class="chore_completions">
                                     <div class="completions">
