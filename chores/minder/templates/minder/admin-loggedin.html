@@ -129,7 +129,7 @@
                                 </td>
                                 <td class="chore_completions">
                                     <div class="completions">
-                                        {% for obj in chore.week_completions %}<div class="dateblock" title-"{{ obj.note }}">{{ obj.date }}</div>{% endfor %}
+                                        {% for obj in chore.week_completions %}<div class="dateblock" title="{{ obj.note }}">{{ obj.date }}</div>{% endfor %}
                                     </div>
                                 </td>
                             </tr>
